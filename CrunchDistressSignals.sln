@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrunchDistressSignals", "CrunchDistressSignals\CrunchDistressSignals.csproj", "{99D8063D-18D5-4396-85A3-46E01B108882}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99D8063D-18D5-4396-85A3-46E01B108882}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D8063D-18D5-4396-85A3-46E01B108882}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D8063D-18D5-4396-85A3-46E01B108882}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D8063D-18D5-4396-85A3-46E01B108882}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82EE5C11-CAE0-41FD-B7B6-154EEB397BBE}
+	EndGlobalSection
+EndGlobal
