@@ -7,6 +7,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CrunchDistressSignals.Models;
+using CrunchDistressSignals.PlayerData;
 using Newtonsoft.Json;
 using NLog;
 using Torch;
@@ -31,6 +33,9 @@ namespace CrunchDistressSignals
         public static ITorchPlugin Alliances;
         public static MethodInfo GetAllianceMembers;
         public static bool MQPluginInstalled = false;
+        public static string BasePath;
+        public static List<DistressGroup> DistressGroups = new List<DistressGroup>();
+        public static IPlayerDataProvider PlayerDataProvier { get; set; }
         public override void Init(ITorchBase torch)
         {
             base.Init(torch);
@@ -49,8 +54,37 @@ namespace CrunchDistressSignals
         private void SetupConfig()
         {
             FileUtils utils = new FileUtils();
+            BasePath = StoragePath;
+            LoadConfigs();
+            if (Config.StoragePath.Equals("Default"))
+            {
+                PlayerStoragePath = Path.Combine($"{StoragePath}//DistressData");
+                Directory.CreateDirectory(StoragePath + "//DistressData");
+            }
+            else
+            {
+                PlayerStoragePath = Config.StoragePath;
+                Directory.CreateDirectory(PlayerStoragePath + "//DistressData");
+            }
+            Directory.CreateDirectory(PlayerStoragePath + "//DistressGroups");
+            if (!File.Exists($"{PlayerStoragePath}//DistressGroups//example.xml"))
+            {
+                DistressGroup group = new DistressGroup();
+                group.Aliases = new List<string>() { "example, example2, example3" };
+                group.Name = "EXAMPLE";
+                group.Enabled = false;
+                group.SendToDiscord = false;
+                group.SteamIdsToSendTo = new List<ulong>() { 76561198045390854, 76561198045390854 };
+                utils.WriteToXmlFile($"{PlayerStoragePath}//DistressGroups//example.xml", group);
+            }
 
-            var path = $"{StoragePath}\\DistressConfig.xml";
+            PlayerDataProvier = new PlayerDataProvider($"{PlayerStoragePath}\\PlayerData\\");
+        }
+
+        public static void LoadConfigs()
+        {
+            FileUtils utils = new FileUtils();
+            var path = $"{BasePath}\\DistressConfig.xml";
             if (File.Exists(path))
             {
                 Config = utils.ReadFromXmlFile<Config>(path);
@@ -61,17 +95,21 @@ namespace CrunchDistressSignals
                 Config = new Config();
                 utils.WriteToXmlFile<Config>(path, Config, false);
             }
-            if (Config.StoragePath.Equals("Default"))
+
+            DistressGroups.Clear();
+            foreach (var s in Directory.GetFiles($"{PlayerStoragePath}//DistressGroups//"))
             {
-                PlayerStoragePath = Path.Combine($"{StoragePath}//DistressData");
-                Directory.CreateDirectory(StoragePath + "//DistressData");
-            }
-            else
-            {
-                PlayerStoragePath = Config.StoragePath;
+                try
+                {
+                    DistressGroups.Add(utils.ReadFromXmlFile<DistressGroup>(s));
+                }
+                catch (Exception e)
+                {
+                    Log.Info($"Error loading distress group {s}");
+                }
+               
             }
         }
-
 
         public static bool SendToMQ(string Type, Object SendThis)
         {

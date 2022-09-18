@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CrunchDistressSignals.Helpers;
 using Newtonsoft.Json;
@@ -29,7 +30,7 @@ namespace CrunchDistressSignals
 
                 ctx.GetPattern(HandleMessageMethod).Suffixes.Add(HandleMessagePatch);
                 Handlers.Add(DistressSignals, HandleDistress);
-                Handlers.Add(GlobalDistressSignals, HandleDistress);
+                Handlers.Add(GlobalDistressSignals, HandleGlobalDistress);
             }
 
             public static void HandleDistress(string MessageBody)
@@ -37,8 +38,14 @@ namespace CrunchDistressSignals
                 var DistressSignal = JsonConvert.DeserializeObject<CrunchDistressSignals.Models.DistressSignal>(MessageBody);
                 var gps = GPSHelper.CreateGps(DistressSignal.GPS, DistressSignal.Color, DistressSignal.PlayerName, DistressSignal.Reason);
                 var gpscol = (MyGpsCollection)MyAPIGateway.Session?.GPS;
+       
                 foreach (var player in MySession.Static.Players.GetOnlinePlayers())
                 {
+                    if (DistressSignal.SteamIds.Contains(player.Id.SteamId))
+                    {
+                        gpscol.SendAddGpsRequest(player.Identity.IdentityId, ref gps);
+                        continue;
+                    }
                     var fac = FacUtils.GetPlayersFaction(player.Identity.IdentityId);
                     if (fac != null && DistressSignal.FactionsToSendTo.Contains(fac.FactionId))
                     {
@@ -49,11 +56,12 @@ namespace CrunchDistressSignals
             public static void HandleGlobalDistress(string MessageBody)
             {
                 var DistressSignal = JsonConvert.DeserializeObject<CrunchDistressSignals.Models.DistressSignal>(MessageBody);
-                var gps = DistressSignal.GPS;
-                if (DistressSignal.SendToGlobal) return;
+                var gps = GPSHelper.CreateGps(DistressSignal.GPS, DistressSignal.Color, DistressSignal.Name, DistressSignal.Reason);
+                var gpscol = (MyGpsCollection)MyAPIGateway.Session?.GPS;
+
                 foreach (var player in MySession.Static.Players.GetOnlinePlayers())
                 {
-
+                    gpscol.SendAddGpsRequest(player.Identity.IdentityId, ref gps);
                 }
             }
 

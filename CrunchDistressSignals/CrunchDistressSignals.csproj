@@ -83,9 +83,12 @@
     <Compile Include="Helpers\FacUtils.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="Helpers\GPS.cs" />
+    <Compile Include="Models\DistressGroup.cs" />
     <Compile Include="Models\DistressSignal.cs" />
     <Compile Include="MQPatching.cs" />
+    <Compile Include="PlayerData\IPlayerDataProvider.cs" />
     <Compile Include="PlayerData\PlayerData.cs" />
+    <Compile Include="PlayerData\PlayerDataProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

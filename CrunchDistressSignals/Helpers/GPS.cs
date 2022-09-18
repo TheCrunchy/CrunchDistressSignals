@@ -16,8 +16,8 @@ namespace CrunchDistressSignals.Helpers
             MyGps gps = new MyGps
             {
                 Coords = Position,
-                Name = Name + " - Distress Signal ",
-                DisplayName = Name + " - Distress Signal ",
+                Name = Name,
+                DisplayName = Name,
                 GPSColor = gpsColor,
                 IsContainerGPS = true,
                 ShowOnHud = true,

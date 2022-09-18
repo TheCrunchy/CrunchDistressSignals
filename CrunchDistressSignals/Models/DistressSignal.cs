@@ -12,8 +12,10 @@ namespace CrunchDistressSignals.Models
         public string PlayerName;
         public Vector3D GPS;
         public bool SendToGlobal = false;
-        public List<long> FactionsToSendTo;
+        public List<long> FactionsToSendTo = new List<long>();
+        public List<ulong> SteamIds = new List<ulong>();
         public Color Color;
         public string Reason;
+        public string Name;
     }
 }
