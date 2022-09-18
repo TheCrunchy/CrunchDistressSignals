@@ -125,7 +125,11 @@ namespace CrunchDistressSignals
 
         private void SessionChanged(ITorchSession session, TorchSessionState newState)
         {
-
+            if (newState == TorchSessionState.Loaded)
+            {
+                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerJoined += PlayerDataProvier.Login;
+                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerLeft += PlayerDataProvier.Logout;
+            }
         }
 
         public void InitPluginDependencies(PluginManager Plugins, PatchManager Patches)
