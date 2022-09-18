@@ -58,13 +58,13 @@ namespace CrunchDistressSignals
             LoadConfigs();
             if (Config.StoragePath.Equals("Default"))
             {
-                PlayerStoragePath = Path.Combine($"{StoragePath}//DistressData");
-                Directory.CreateDirectory(StoragePath + "//DistressData");
+                PlayerStoragePath = Path.Combine($"{StoragePath}//PlayerData");
+                Directory.CreateDirectory(StoragePath + "//PlayerData");
             }
             else
             {
                 PlayerStoragePath = Config.StoragePath;
-                Directory.CreateDirectory(PlayerStoragePath + "//DistressData");
+                Directory.CreateDirectory(PlayerStoragePath + "//PlayerData");
             }
             Directory.CreateDirectory(PlayerStoragePath + "//DistressGroups");
             if (!File.Exists($"{PlayerStoragePath}//DistressGroups//example.xml"))
@@ -78,7 +78,7 @@ namespace CrunchDistressSignals
                 utils.WriteToXmlFile($"{PlayerStoragePath}//DistressGroups//example.xml", group);
             }
 
-            PlayerDataProvier = new PlayerDataProvider($"{PlayerStoragePath}\\PlayerData\\");
+            PlayerDataProvier = new PlayerDataProvider($"{PlayerStoragePath}//PlayerData//");
         }
 
         public static void LoadConfigs()
