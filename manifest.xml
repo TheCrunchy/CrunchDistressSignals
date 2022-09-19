@@ -2,5 +2,5 @@
 <PluginManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>CrunchDistressSignals</Name>
   <Guid>5da29836-669a-40bd-bfcf-b195ed4e1966</Guid>
-  <Version>v1.0</Version>
+  <Version>v1.2</Version>
 </PluginManifest>

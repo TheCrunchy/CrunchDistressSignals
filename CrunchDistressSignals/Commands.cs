@@ -83,7 +83,19 @@ namespace CrunchDistressSignals
             if (Core.DistressGroups.Any(x =>
                     string.Equals(x.Name, reason, StringComparison.CurrentCultureIgnoreCase) || x.Aliases.Any(z => string.Equals(z, reason, StringComparison.CurrentCultureIgnoreCase))))
             {
-
+                var signal = Core.DistressGroups.First(x => string.Equals(x.Name, reason, StringComparison.CurrentCultureIgnoreCase) || x.Aliases.Any(z => string.Equals(z, reason, StringComparison.CurrentCultureIgnoreCase)));
+                //send a distress signal, and a new object 
+                var distress = new DistressSignal
+                {
+                    GPS = Context.Player.Character.PositionComp.GetPosition(),
+                    PlayerName = signal.Name,
+                    Color = signal.Color,
+                    SteamIds = signal.SteamIdsToSendTo,
+                    SendToGlobal = false,
+                    Reason = reason
+                };
+                Core.SendToMQ(MQPatching.MQPluginPatch.DistressSignals, distress);
+                Core.SendToDiscord(distress, signal);
                 Context.Respond("Sending signal to distress group.");
                 return;
             }
@@ -138,7 +150,8 @@ namespace CrunchDistressSignals
         [Permission(MyPromoteLevel.Admin)]
         public void reload()
         {
-
+            Core.LoadConfigs();
+            Context.Respond("Done");
         }
 
         [Command("addfac", "add a faction tag, or list of tags seperated by , to whitelist")]

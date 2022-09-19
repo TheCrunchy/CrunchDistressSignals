@@ -122,7 +122,34 @@ namespace CrunchDistressSignals
             SendMessage?.Invoke(MQ, methodInput);
             return true;
         }
+        public static bool SendToDiscord(Object SendThis, DistressGroup group)
+        {
+            //eventually make this use SEDB if its installed, or the other one by whatever zzs name is today 
+            if (AlliancePluginInstalled)
+            {
+                if (MQPluginInstalled)
+                {
+                    var distress = (DistressSignal) SendThis;
+                    var signal = new AllianceSendToDiscord();
+                    signal.BotToken = group.BotToken;
+                    signal.ChannelId = group.DiscordChannelIdToSendTo;
+                    signal.SenderPrefix = group.Prefix;
+                    signal.DoEmbed = true;
+                    signal.EmbedB = group.b;
+                    signal.EmbedG = group.g;
+                    signal.EmbedR = group.r;
+                    signal.MessageText = group.Name;
+                    signal.SendToIngame = false;
 
+                    var input = JsonConvert.SerializeObject(SendThis);
+                    var methodInput = new object[] { "AllianceSendToDiscord", input };
+                    SendMessage?.Invoke(MQ, methodInput);
+                    return true;
+                }
+            }
+
+            return false;
+        }
         private void SessionChanged(ITorchSession session, TorchSessionState newState)
         {
             if (newState == TorchSessionState.Loaded)

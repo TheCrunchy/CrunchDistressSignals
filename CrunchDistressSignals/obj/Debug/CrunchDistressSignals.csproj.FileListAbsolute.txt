@@ -73,7 +73,6 @@ C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressS
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\bin\Debug\VRage.Game.XmlSerializers.dll
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\bin\Debug\VRage.Math.XmlSerializers.dll
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\bin\Debug\SpaceEngineers.ObjectBuilders.XmlSerializers.dll
-C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.csproj.AssemblyReference.cache
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.csproj.CoreCompileInputs.cache
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.csproj.CopyComplete
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.dll

@@ -83,6 +83,7 @@
     <Compile Include="Helpers\FacUtils.cs" />
     <Compile Include="FileUtils.cs" />
     <Compile Include="Helpers\GPS.cs" />
+    <Compile Include="Models\AllianceSendToDiscord.cs" />
     <Compile Include="Models\DistressGroup.cs" />
     <Compile Include="Models\DistressSignal.cs" />
     <Compile Include="MQPatching.cs" />
