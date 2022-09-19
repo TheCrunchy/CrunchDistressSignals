@@ -55,18 +55,30 @@ namespace CrunchDistressSignals
         {
             FileUtils utils = new FileUtils();
             BasePath = StoragePath;
-            LoadConfigs();
+            var path = $"{BasePath}//DistressConfig.xml";
+            if (File.Exists(path))
+            {
+                Config = utils.ReadFromXmlFile<Config>(path);
+                utils.WriteToXmlFile<Config>(path, Config, false);
+            }
+            else
+            {
+                Config = new Config();
+                utils.WriteToXmlFile<Config>(path, Config, false);
+            }
+
+           
             if (Config.StoragePath.Equals("Default"))
             {
-                PlayerStoragePath = Path.Combine($"{StoragePath}//PlayerData");
-                Directory.CreateDirectory(StoragePath + "//PlayerData");
+                PlayerStoragePath = $"{StoragePath}//Distress//";
             }
             else
             {
                 PlayerStoragePath = Config.StoragePath;
-                Directory.CreateDirectory(PlayerStoragePath + "//PlayerData");
             }
-            Directory.CreateDirectory(PlayerStoragePath + "//DistressGroups");
+            Directory.CreateDirectory(PlayerStoragePath);
+            Directory.CreateDirectory($"{PlayerStoragePath}//PlayerData//");
+            Directory.CreateDirectory($"{PlayerStoragePath}//DistressGroups");
             if (!File.Exists($"{PlayerStoragePath}//DistressGroups//example.xml"))
             {
                 DistressGroup group = new DistressGroup();
@@ -78,13 +90,13 @@ namespace CrunchDistressSignals
                 utils.WriteToXmlFile($"{PlayerStoragePath}//DistressGroups//example.xml", group);
             }
 
-            PlayerDataProvier = new PlayerDataProvider($"{PlayerStoragePath}//PlayerData//");
+            LoadConfigs();
         }
 
         public static void LoadConfigs()
         {
             FileUtils utils = new FileUtils();
-            var path = $"{BasePath}\\DistressConfig.xml";
+            var path = $"{BasePath}//DistressConfig.xml";
             if (File.Exists(path))
             {
                 Config = utils.ReadFromXmlFile<Config>(path);
@@ -101,7 +113,11 @@ namespace CrunchDistressSignals
             {
                 try
                 {
-                    DistressGroups.Add(utils.ReadFromXmlFile<DistressGroup>(s));
+                    var group = utils.ReadFromXmlFile<DistressGroup>(s);
+                    if (group.Enabled)
+                    {
+                        DistressGroups.Add(group);
+                    }
                 }
                 catch (Exception e)
                 {
@@ -154,6 +170,7 @@ namespace CrunchDistressSignals
         {
             if (newState == TorchSessionState.Loaded)
             {
+                PlayerDataProvier = new PlayerDataProvider(PlayerStoragePath + "//PlayerData//");
                 session.Managers.GetManager<IMultiplayerManagerBase>().PlayerJoined += PlayerDataProvier.Login;
                 session.Managers.GetManager<IMultiplayerManagerBase>().PlayerLeft += PlayerDataProvier.Logout;
             }
