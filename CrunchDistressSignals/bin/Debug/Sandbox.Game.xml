@@ -318,6 +318,9 @@
         <member name="T:Sandbox.Engine.Analytics.MyBannerClickEvent">
             <summary> A banner in the main menu was clicked </summary>
         </member>
+        <member name="T:Sandbox.Engine.Analytics.MyFactionJoinEvent">
+            <summary> A banner in the main menu was clicked </summary>
+        </member>
         <member name="T:Sandbox.Engine.Analytics.MyHeartbeatEvent">
             <summary> Sent periodically to report the player is online </summary>
         </member>
