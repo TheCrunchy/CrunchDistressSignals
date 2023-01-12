@@ -32,7 +32,7 @@ namespace CrunchDistressSignals
             var message = new DistressSignal
             {
                 GPS = Context.Player.Character.PositionComp.GetPosition(),
-                PlayerName = Context.Player.DisplayName,
+                PlayerName = name,
                 Color = color,
                 SendToGlobal = true,
                 Reason = reason,
@@ -80,6 +80,8 @@ namespace CrunchDistressSignals
 
             }
 
+            var playerName = Context.Player.DisplayName;
+
             if (Core.DistressGroups.Any(x =>
                     string.Equals(x.Name, reason, StringComparison.CurrentCultureIgnoreCase) || x.Aliases.Any(z => string.Equals(z, reason, StringComparison.CurrentCultureIgnoreCase))))
             {
@@ -110,7 +112,7 @@ namespace CrunchDistressSignals
                 var distress = new DistressSignal
                 {
                     GPS = Context.Player.Character.PositionComp.GetPosition(),
-                    PlayerName = Context.Player.DisplayName + " - Distress ",
+                    PlayerName = playerName + " - Alliance Distress ",
                     Color = Color.Yellow,
                     FactionsToSendTo = members,
                     SendToGlobal = false,
@@ -127,8 +129,8 @@ namespace CrunchDistressSignals
             var message = new DistressSignal
             {
                 GPS = Context.Player.Character.PositionComp.GetPosition(),
-                PlayerName = Context.Player.DisplayName + " - Distress ",
-                Color = Color.Yellow,
+                PlayerName = playerName + " - Distress ",
+                Color = Color.Purple,
                 FactionsToSendTo = data.FactionsToSendTo,
                 SendToGlobal = data.SendToGlobal,
                 Reason = reason

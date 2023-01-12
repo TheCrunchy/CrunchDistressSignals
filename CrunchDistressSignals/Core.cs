@@ -127,7 +127,7 @@ namespace CrunchDistressSignals
             }
         }
 
-        public static bool SendToMQ(string Type, Object SendThis)
+        public static bool SendToMQ(string Type, DistressSignal SendThis)
         {
             if (!MQPluginInstalled)
             {

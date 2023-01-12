@@ -56,7 +56,7 @@ namespace CrunchDistressSignals
             public static void HandleGlobalDistress(string MessageBody)
             {
                 var DistressSignal = JsonConvert.DeserializeObject<CrunchDistressSignals.Models.DistressSignal>(MessageBody);
-                var gps = GPSHelper.CreateGps(DistressSignal.GPS, DistressSignal.Color, DistressSignal.Name, DistressSignal.Reason);
+                var gps = GPSHelper.CreateGps(DistressSignal.GPS, DistressSignal.Color, DistressSignal.PlayerName, DistressSignal.Reason);
                 var gpscol = (MyGpsCollection)MyAPIGateway.Session?.GPS;
 
                 foreach (var player in MySession.Static.Players.GetOnlinePlayers())
