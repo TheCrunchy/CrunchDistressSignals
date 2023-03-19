@@ -2371,11 +2371,6 @@
             <param name="timeout">Timeout</param>
             <returns></returns>
         </member>
-        <member name="T:Torch.Mod.Messages.IncomingMessage">
-            <summary>
-            shim to store incoming message data
-            </summary>
-        </member>
         <member name="T:Torch.Mod.Messages.DialogMessage">
             Dialogs are structured as follows
             

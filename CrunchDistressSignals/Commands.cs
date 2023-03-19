@@ -102,7 +102,7 @@ namespace CrunchDistressSignals
                 return;
             }
 
-            var data = Core.PlayerDataProvier.GetPlayerData(Context.Player.SteamUserId);
+            var data = Core.PlayerDataProvider.GetPlayerData(Context.Player.SteamUserId);
 
             if (Core.AlliancePluginInstalled && data.SendToAlliance)
             {
@@ -167,7 +167,7 @@ namespace CrunchDistressSignals
             }
 
             var tags = factionTags.Replace(" ", "").Split(',').ToList();
-            var data = Core.PlayerDataProvier.GetPlayerData(Context.Player.SteamUserId);
+            var data = Core.PlayerDataProvider.GetPlayerData(Context.Player.SteamUserId);
             foreach (var tag in tags)
             {
                 
@@ -184,7 +184,7 @@ namespace CrunchDistressSignals
                 }
             }
             Context.Respond("Added factions to whitelist");
-            Core.PlayerDataProvier.SavePlayerData(Context.Player.SteamUserId, data);
+            Core.PlayerDataProvider.SavePlayerData(Context.Player.SteamUserId, data);
         }
 
         [Command("alliance", "toggle alliance settings")]
@@ -197,10 +197,10 @@ namespace CrunchDistressSignals
                 return;
             }
 
-            var data = Core.PlayerDataProvier.GetPlayerData(Context.Player.SteamUserId);
+            var data = Core.PlayerDataProvider.GetPlayerData(Context.Player.SteamUserId);
             data.SendToAlliance = !data.SendToAlliance;
             Context.Respond($"Toggled alliance signals to {data.SendToAlliance}");
-            Core.PlayerDataProvier.SavePlayerData(Context.Player.SteamUserId, data);
+            Core.PlayerDataProvider.SavePlayerData(Context.Player.SteamUserId, data);
         }
 
         [Command("removefac", "add a faction tag, or list of tags seperated by , to whitelist")]
@@ -214,7 +214,7 @@ namespace CrunchDistressSignals
             }
 
             var tags = factionTags.Replace(" ", "").Split(',').ToList();
-            var data = Core.PlayerDataProvier.GetPlayerData(Context.Player.SteamUserId);
+            var data = Core.PlayerDataProvider.GetPlayerData(Context.Player.SteamUserId);
             foreach (var tag in tags)
             {
 
@@ -231,7 +231,7 @@ namespace CrunchDistressSignals
                 }
             }
             Context.Respond("Removed factions from whitelist.");
-            Core.PlayerDataProvier.SavePlayerData(Context.Player.SteamUserId, data);
+            Core.PlayerDataProvider.SavePlayerData(Context.Player.SteamUserId, data);
         }
     }
 }

@@ -7,10 +7,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using AlliancesPlugin.NexusStuff;
 using CrunchDistressSignals.Models;
 using CrunchDistressSignals.PlayerData;
 using Newtonsoft.Json;
 using NLog;
+using Sandbox.ModAPI;
 using Torch;
 using Torch.API;
 using Torch.API.Managers;
@@ -35,7 +37,8 @@ namespace CrunchDistressSignals
         public static bool MQPluginInstalled = false;
         public static string BasePath;
         public static List<DistressGroup> DistressGroups = new List<DistressGroup>();
-        public static IPlayerDataProvider PlayerDataProvier { get; set; }
+        public static IPlayerDataProvider PlayerDataProvider { get; set; }
+        public static NexusAPI API { get; private set; }
         public override void Init(ITorchBase torch)
         {
             base.Init(torch);
@@ -129,6 +132,20 @@ namespace CrunchDistressSignals
 
         public static bool SendToMQ(string Type, DistressSignal SendThis)
         {
+            if (NexusInstalled)
+            {
+                API.SendMessageToAllServers(MyAPIGateway.Utilities.SerializeToBinary<DistressSignal>(SendThis));
+                if (SendThis.SendToGlobal)
+                {
+                    MQPatching.MQPluginPatch.HandleGlobalDistress(JsonConvert.SerializeObject(SendThis));
+                }
+                else
+                {
+                    MQPatching.MQPluginPatch.HandleDistress(JsonConvert.SerializeObject(SendThis));
+                }
+                return true;
+            }
+
             if (!MQPluginInstalled)
             {
                 return false;
@@ -170,14 +187,45 @@ namespace CrunchDistressSignals
         {
             if (newState == TorchSessionState.Loaded)
             {
-                PlayerDataProvier = new PlayerDataProvider(PlayerStoragePath + "//PlayerData//");
-                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerJoined += PlayerDataProvier.Login;
-                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerLeft += PlayerDataProvier.Logout;
+                PlayerDataProvider = new PlayerDataProvider(PlayerStoragePath + "//PlayerData//");
+                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerJoined += PlayerDataProvider.Login;
+                session.Managers.GetManager<IMultiplayerManagerBase>().PlayerLeft += PlayerDataProvider.Logout;
             }
         }
+        private static readonly Guid NexusGUID = new Guid("28a12184-0422-43ba-a6e6-2e228611cca5");
+        public static bool NexusInstalled { get; private set; } = false;
 
+        private static void HandleNexusMessage(ushort handlerId, byte[] data, ulong steamID, bool fromServer)
+        {
+            var message = MyAPIGateway.Utilities.SerializeFromBinary<DistressSignal>(data);
+            if (message.SendToGlobal)
+            {
+                MQPatching.MQPluginPatch.HandleGlobalDistress(JsonConvert.SerializeObject(message));
+            }
+            else
+            {
+                MQPatching.MQPluginPatch.HandleDistress(JsonConvert.SerializeObject(message));
+            }
+        }
         public void InitPluginDependencies(PluginManager Plugins, PatchManager Patches)
         {
+            if (Plugins.Plugins.TryGetValue(NexusGUID, out ITorchPlugin torchPlugin))
+            {
+                Type type = torchPlugin.GetType();
+                Type type2 = ((type != null) ? type.Assembly.GetType("Nexus.API.PluginAPISync") : null);
+                if (type2 != null)
+                {
+                    type2.GetMethod("ApplyPatching", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[]
+                    {
+                        typeof(NexusAPI),
+                        "Alliances"
+                    });
+                    API = new NexusAPI(4399);
+                    MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(4399, new Action<ushort, byte[], ulong, bool>(HandleNexusMessage));
+                    NexusInstalled = true;
+                }
+            }
+
             if (Torch.Managers.GetManager<PluginManager>().Plugins.TryGetValue(Guid.Parse("74796707-646f-4ebd-8700-d077a5f47af3"),
                     out var AlliancePlugin))
             {
