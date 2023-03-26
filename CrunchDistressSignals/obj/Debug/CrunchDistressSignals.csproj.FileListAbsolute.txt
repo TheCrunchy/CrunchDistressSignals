@@ -77,3 +77,4 @@ C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressS
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.csproj.CopyComplete
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.dll
 C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.pdb
+C:\Users\Cameron\Documents\3 Torch Plugins\CrunchDistressSignals\CrunchDistressSignals\obj\Debug\CrunchDistressSignals.csproj.AssemblyReference.cache

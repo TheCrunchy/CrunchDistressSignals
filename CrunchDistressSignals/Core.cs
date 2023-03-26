@@ -218,7 +218,7 @@ namespace CrunchDistressSignals
                     type2.GetMethod("ApplyPatching", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[]
                     {
                         typeof(NexusAPI),
-                        "Alliances"
+                        "Distress"
                     });
                     API = new NexusAPI(4399);
                     MyAPIGateway.Multiplayer.RegisterSecureMessageHandler(4399, new Action<ushort, byte[], ulong, bool>(HandleNexusMessage));
